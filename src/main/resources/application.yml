@@ -3,4 +3,3 @@ spring:
     url: jdbc:postgresql://localhost:5432/codenames
     username: postgres
     password: postgres
-    schema: public

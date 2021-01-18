@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface WordsRepository extends JpaRepository<Word, Long> {
-	public List<Word> findByLangCode(String langCode);
+public interface WordsDAO extends JpaRepository<Word, Long> {
+	List<Word> findByLangCode(String langCode);
 }
