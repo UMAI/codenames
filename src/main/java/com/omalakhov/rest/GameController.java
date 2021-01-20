@@ -39,7 +39,7 @@ public class GameController {
 
 	@PostMapping("/lobby/create")
 	@ResponseBody
-	public ResponseEntity createLobby(@QueryParam(value = "creatorName") String creatorName) {
+	public ResponseEntity createLobby(@QueryParam(value = "creatorName") String creatorName, @QueryParam(value = "langCode") String langCode) {
 		Lobby lobby = new Lobby(CodeGenerator.generateLobbyJoinCode(), creatorName);
 		lobbiesDAO.save(lobby);
 		return ResponseEntity.ok().build();

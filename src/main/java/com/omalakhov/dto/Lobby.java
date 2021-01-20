@@ -22,6 +22,8 @@ import static com.omalakhov.dto.Team.Color.RED;
 @Table(name = "LOBBIES")
 @Data
 public class Lobby {
+	public static final String WORDS_SEPARATOR = ",";
+
 	@Column(name = "ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_LOBBIES_ID")
@@ -34,11 +36,11 @@ public class Lobby {
 	@Column(name = "LANGUAGE")
 	private String langCode;
 
-	//@Column(name = "WORDS")
-	//private String wordsJson;
-
 	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
 	private List<Team> teams;
+
+	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
+	private List<LobbyWord> lobbyWords;
 
 	public Lobby(String joinCode, String creatorName) {
 		this.joinCode = joinCode;
@@ -61,6 +63,11 @@ public class Lobby {
 	public void removeTeam(Team team) {
 		teams.remove(team);
 		team.setLobby(null);
+	}
+
+	public void setLobbyWords(List<LobbyWord> lobbyWords) {
+		this.lobbyWords = lobbyWords;
+		lobbyWords.forEach(lobbyWord -> lobbyWord.setLobby(this));
 	}
 
 	public List<Player> getAllPlayers() {
