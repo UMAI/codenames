@@ -3,21 +3,23 @@ package com.omalakhov.rest;
 import com.omalakhov.dao.LobbiesDAO;
 import com.omalakhov.dao.WordsDAO;
 import com.omalakhov.dto.Lobby;
+import com.omalakhov.dto.WSWordsResponse;
 import com.omalakhov.dto.Word;
 import com.omalakhov.util.CodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.QueryParam;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api")
 public class GameController {
 	@Autowired
 	private WordsDAO wordsDAO;
@@ -52,12 +54,13 @@ public class GameController {
 	}
 
 	@GetMapping("/words")
-	@ResponseBody
-	public List<String> words(@RequestParam(name = "langCode", defaultValue = "en") String langCode) {
-		return wordsDAO
+	public WSWordsResponse words(@RequestParam(name = "langCode", defaultValue = "en") String langCode) {
+		WSWordsResponse response = new WSWordsResponse();
+		response.setWords(wordsDAO
 				.findByLangCode(langCode)
 				.stream()
 				.map(Word::getWord)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()));
+		return response;
 	}
 }
