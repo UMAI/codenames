@@ -1,23 +1,25 @@
-//const client = require('./client');
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Board from './Board';
+import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
+import Menu from './Menu';
+import Lobby from './Lobby';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {words: []};
-	}
-
-	componentDidMount() {
-		fetch('/api/words').then(response => response.json()).then(data => this.setState(data));
-		//client({method: 'GET', path: '/api/words'}).done(response => this.setState({words: response.entity._embedded.words}));
 	}
 
 	render() {
 		return (
-			<Board words={this.state.words} />
-		)
+			<div className="app">
+				<Router>
+					<Switch>
+						<Route exact path="/" component={Menu} />
+						<Route path="/lobby" component={Lobby} />
+					</Switch>
+				</Router>
+			</div>
+		);
 	}
 }
 

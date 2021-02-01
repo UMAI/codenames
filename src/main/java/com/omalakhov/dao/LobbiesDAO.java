@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LobbiesDAO extends JpaRepository<Lobby, Long> {
+	Lobby findFirstByJoinCode(String joinCode);
 }

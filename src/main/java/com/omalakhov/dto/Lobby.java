@@ -1,5 +1,6 @@
 package com.omalakhov.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.omalakhov.dto.Team.Color.BLUE;
 import static com.omalakhov.dto.Team.Color.RED;
@@ -37,7 +37,12 @@ public class Lobby {
 	private String langCode;
 
 	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Team> teams;
+
+	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<Player> undecidedPlayers;
 
 	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
 	private List<LobbyWord> lobbyWords;
@@ -45,11 +50,24 @@ public class Lobby {
 	public Lobby(String joinCode, String creatorName) {
 		this.joinCode = joinCode;
 		Player player = new Player(creatorName);
+		addPlayer(player);
 		Team redTeam = new Team(RED.name(), RED.getColorHex());
-		redTeam.addPlayer(player);
 		Team blueTeam = new Team(BLUE.name(), BLUE.getColorHex());
 		addTeam(redTeam);
 		addTeam(blueTeam);
+	}
+
+	public void addPlayer(Player player) {
+		if (undecidedPlayers == null) {
+			undecidedPlayers = new ArrayList<>();
+		}
+		undecidedPlayers.add(player);
+		player.setLobby(this);
+	}
+
+	public void removePlayer(Player player) {
+		undecidedPlayers.remove(player);
+		player.setLobby(null);
 	}
 
 	public void addTeam(Team team) {
@@ -68,13 +86,5 @@ public class Lobby {
 	public void setLobbyWords(List<LobbyWord> lobbyWords) {
 		this.lobbyWords = lobbyWords;
 		lobbyWords.forEach(lobbyWord -> lobbyWord.setLobby(this));
-	}
-
-	public List<Player> getAllPlayers() {
-		return teams
-				.stream()
-				.map(Team::getPlayers)
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
 	}
 }

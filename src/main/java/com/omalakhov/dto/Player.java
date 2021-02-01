@@ -1,5 +1,6 @@
 package com.omalakhov.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -38,7 +39,13 @@ public class Player {
 	private String name;
 
 	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "FK_LOBBY_ID"))
+	@JsonBackReference
+	private Lobby lobby;
+
+	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_TEAM_ID"))
+	@JsonBackReference
 	private Team team;
 
 	@Column(name = "ROLE")

@@ -1,5 +1,7 @@
 package com.omalakhov.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -46,9 +48,11 @@ public class Team {
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_LOBBY_ID"))
+	@JsonBackReference
 	private Lobby lobby;
 
 	@OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Player> players;
 
 	public Team(String name, String colorHex) {

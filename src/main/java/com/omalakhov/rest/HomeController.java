@@ -9,4 +9,9 @@ public class HomeController {
 	public String index() {
 		return "index";
 	}
+
+	@GetMapping("/menu")
+	public String menu() {
+		return "index";
+	}
 }

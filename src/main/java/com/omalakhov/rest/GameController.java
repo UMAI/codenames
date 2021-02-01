@@ -3,6 +3,7 @@ package com.omalakhov.rest;
 import com.omalakhov.dao.LobbiesDAO;
 import com.omalakhov.dao.WordsDAO;
 import com.omalakhov.dto.Lobby;
+import com.omalakhov.dto.Player;
 import com.omalakhov.dto.WSWordsResponse;
 import com.omalakhov.dto.Word;
 import com.omalakhov.util.CodeGenerator;
@@ -41,16 +42,20 @@ public class GameController {
 
 	@PostMapping("/lobby/create")
 	@ResponseBody
-	public ResponseEntity createLobby(@QueryParam(value = "creatorName") String creatorName, @QueryParam(value = "langCode") String langCode) {
+	public Lobby createLobby(@QueryParam(value = "creatorName") String creatorName, @QueryParam(value = "langCode") String langCode) {
 		Lobby lobby = new Lobby(CodeGenerator.generateLobbyJoinCode(), creatorName);
 		lobbiesDAO.save(lobby);
-		return ResponseEntity.ok().build();
+		return lobby;
 	}
 
 	@PostMapping("/lobby/join")
 	@ResponseBody
-	public ResponseEntity joinLobby() {
-		return ResponseEntity.ok().build();
+	public Lobby joinLobby(@QueryParam(value = "joinCode") String joinCode, @QueryParam(value = "playerName") String playerName) {
+		Lobby lobby = lobbiesDAO.findFirstByJoinCode(joinCode);
+		Player player = new Player(playerName);
+		lobby.addPlayer(player);
+		lobbiesDAO.save(lobby);
+		return lobby;
 	}
 
 	@GetMapping("/words")
