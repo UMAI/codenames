@@ -2,8 +2,9 @@ package com.omalakhov.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "PLAYERS")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Player {
 	@AllArgsConstructor
 	@Getter

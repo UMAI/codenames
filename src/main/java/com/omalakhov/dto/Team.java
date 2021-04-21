@@ -3,8 +3,9 @@ package com.omalakhov.dto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,13 +24,17 @@ import java.util.List;
 
 @Entity
 @Table(name = "TEAMS")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Team {
 	@AllArgsConstructor
 	@Getter
 	public enum Color {
 		RED("#ff3333"),
-		BLUE("#3380ff");
+		BLUE("#3380ff"),
+		BLACK("#000000"),
+		GREY("#e3e4e6");
 
 		private final String colorHex;
 	}

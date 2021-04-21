@@ -1,9 +1,13 @@
 package com.omalakhov.dto;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +19,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "LOBBY_WORDS")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class LobbyWord {
 	@Column(name = "ID")
 	@Id
@@ -25,14 +31,20 @@ public class LobbyWord {
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_LOBBY_ID"))
+	@JsonBackReference
 	private Lobby lobby;
 
-	@Column(name = "WORD")
-	private String word;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(foreignKey = @ForeignKey(name = "FK_WORD_ID"))
+	private Word word;
 
 	@Column(name = "COLOR_HEX")
 	private String colorHex;
 
 	@Column(name = "OPEN")
 	private boolean open;
+
+	public LobbyWord(Word word) {
+		this.word = word;
+	}
 }

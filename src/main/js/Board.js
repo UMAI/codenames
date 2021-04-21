@@ -8,7 +8,7 @@ class Board extends Component {
 
 	renderWord(i) {
 		return (
-			<Word word={this.props.words[i]} />
+			<Word word={this.props.words[i].word.word} color={this.props.words[i].colorHex} />
 		);
 	}
 

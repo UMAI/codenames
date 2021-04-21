@@ -7,19 +7,32 @@ class Team extends Component {
 	}
 
 	render() {
-		if (this.props.players) {
+		const style = {
+			color: this.props.team.colorHex
+		}
+		if (this.props.team.players) {
 			let players = []
-			for (let i = 0; i < this.props.players.length; i++) {
-				players.push(<Player player={this.props.players[i]}/>);
+			for (let i = 0; i < this.props.team.players.length; i++) {
+				players.push(<Player style={style} player={this.props.team.players[i]}/>);
 			}
 			return (
-				<div className="team">
-					{players}
+				<div className="team" style={style}>
+					<div className="teamName">
+						{this.props.team.name}
+					</div>
+					<div className="teamPlayers">
+						{players}
+					</div>
 				</div>
 			);
 		}
 		return (
-			<h1>TEAM</h1>
+			<div className="team" style={style}>
+				<div className="teamName">
+					{this.props.team.name}
+				</div>
+				<div className="teamPlayers" />
+			</div>
 		);
 	}
 }

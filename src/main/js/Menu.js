@@ -8,15 +8,18 @@ class Menu extends Component {
 			name: this.generatePlayerName(),
 			joinLobbyLink: null
 		};
+		this.handleJoinLobbyLinkChange = this.handleJoinLobbyLinkChange.bind(this);
 	}
 
 	generatePlayerName() {
 		return 'name';
 	}
 
-	setJoinLobbyLink() {
-		const link = '/lobby/?joinCode=' + document.getElementById('join_code').value + '?playerName=' + this.state.name;
+	handleJoinLobbyLinkChange(event) {
+		console.log('in handleJoinLobbyLinkChange now');
+		const link = '/lobby/?joinCode=' + event.target.value + '&playerName=' + this.state.name;
 		this.setState({joinLobbyLink: link});
+		console.log(this.state);
 	}
 
 	render() {
@@ -27,7 +30,7 @@ class Menu extends Component {
 					<Link to={'/lobby?creatorName=' + this.state.name}>CREATE LOBBY</Link>
 				</li>
 				<li>
-					<input id="join_code" onChange={() => this.setJoinLobbyLink} />
+					<input type="text" id="join_code" onChange={this.handleJoinLobbyLinkChange} />
 					<Link to={this.state.joinLobbyLink}>JOIN</Link>
 				</li>
 			</ul>

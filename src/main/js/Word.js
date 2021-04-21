@@ -6,8 +6,11 @@ class Word extends Component {
 	}
 
 	render() {
+		const style = {
+			backgroundColor: this.props.color
+		}
 		return (
-			<button className="word" onClick={() => alert('click')}>
+			<button className="word" style={style} onClick={() => alert('click')}>
 				{this.props.word}
 			</button>
 		);

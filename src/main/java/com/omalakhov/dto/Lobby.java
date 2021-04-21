@@ -1,7 +1,9 @@
 package com.omalakhov.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,7 +22,9 @@ import static com.omalakhov.dto.Team.Color.RED;
 
 @Entity
 @Table(name = "LOBBIES")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Lobby {
 	public static final String WORDS_SEPARATOR = ",";
 
@@ -45,6 +49,7 @@ public class Lobby {
 	private List<Player> undecidedPlayers;
 
 	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<LobbyWord> lobbyWords;
 
 	public Lobby(String joinCode, String creatorName) {

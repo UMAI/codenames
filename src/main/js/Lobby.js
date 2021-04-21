@@ -18,7 +18,7 @@ class Lobby extends Component {
 		let query = this.getQuery();
 		const creatorName = query.get('creatorName');
 		if (creatorName) {
-			fetch('/api/lobby/create?creatorName=' + creatorName + '&langCode=en', {method: 'POST'})
+			fetch('/api/lobby?creatorName=' + creatorName + '&langCode=en', {method: 'PUT'})
 				.then(response => response.json())
 				.then(data => this.setState({lobby: data}));
 		}
@@ -27,6 +27,13 @@ class Lobby extends Component {
 				.then(response => response.json())
 				.then(data => this.setState({lobby: data}));
 		}
+		this.setupBeforeUnloadListener();
+	}
+
+	setupBeforeUnloadListener() {
+		window.addEventListener("beforeunload", (event) => {
+			fetch('/api/lobby/' + this.state.lobby.id, {method: 'DELETE'});
+		})
 	}
 
 	render() {
@@ -37,10 +44,12 @@ class Lobby extends Component {
 		}
 		return (
 			<div className="lobby">
-				<h1>{this.state.lobby.joinCode}</h1>
-				<Team players={this.state.lobby.teams[0].players} />
-				<Board words={this.state.lobby.lobbyWords} />
-				<Team players={this.state.lobby.teams[1].players} />
+				<div className="joinCode">{this.state.lobby.joinCode}</div>
+				<div className="lobbyContent">
+					<Team team={this.state.lobby.teams[0]} />
+					<Board words={this.state.lobby.lobbyWords} />
+					<Team team={this.state.lobby.teams[1]} />
+				</div>
 			</div>
 		)
 	}

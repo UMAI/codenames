@@ -1,0 +1,42 @@
+* {
+    font-family: "Courier New", sans-serif;
+}
+
+.lobby {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.joinCode {
+    font-size: 40pt;
+}
+
+.lobbyContent {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.word {
+    color: antiquewhite;
+    width: 160pt;
+    height: 80pt;
+    font-size: 25pt;
+    font-size: 1vw;
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    width: 200pt;
+}
+
+.teamName {
+    font-size: 40pt;
+    text-align: center;
+    border-bottom-style: solid;
+}
