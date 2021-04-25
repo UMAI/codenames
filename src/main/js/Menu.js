@@ -1,39 +1,60 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 class Menu extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			name: this.generatePlayerName(),
-			joinLobbyLink: null
+			lobby: null,
+			joinCode: null,
+			redirect: false
 		};
-		this.handleJoinLobbyLinkChange = this.handleJoinLobbyLinkChange.bind(this);
+		this.setNewLobbyURL = this.setNewLobbyURL.bind(this);
+		this.setJoinLobbyURL = this.setJoinLobbyURL.bind(this);
 	}
 
 	generatePlayerName() {
-		return 'name';
+		return 'Josh';
 	}
 
-	handleJoinLobbyLinkChange(event) {
-		console.log('in handleJoinLobbyLinkChange now');
-		const link = '/lobby/?joinCode=' + event.target.value + '&playerName=' + this.state.name;
-		this.setState({joinLobbyLink: link});
-		console.log(this.state);
+	setNewLobbyURL() {
+		fetch('/api/lobby?creatorName=' + this.state.name + '&langCode=en', {method: 'PUT'})
+			.then(response => response.json())
+			.then(data => this.setState({lobby: data, redirect: true}));
+	}
+
+	setJoinLobbyURL() {
+		fetch('/api/lobby?joinCode=' + this.state.joinCode + '&playerName=' + this.state.name, {method: 'POST'})
+			.then(response => response.json())
+			.then(data => this.setState({lobby: data, redirect: true}));
 	}
 
 	render() {
+		if (this.state.redirect) {
+			return (
+				<Redirect to={{
+					pathname: '/lobby/' + this.state.lobby.id,
+					state: {
+						lobby: this.state.lobby,
+						name: this.state.name
+					}
+				}} />
+			)
+		}
 		return (
-			<ul className="menu">
-				<li contentEditable="true">{this.state.name}</li>
-				<li>
-					<Link to={'/lobby?creatorName=' + this.state.name}>CREATE LOBBY</Link>
-				</li>
-				<li>
-					<input type="text" id="join_code" onChange={this.handleJoinLobbyLinkChange} />
-					<Link to={this.state.joinLobbyLink}>JOIN</Link>
-				</li>
-			</ul>
+			<div className="menu">
+				<div className="menuItem">
+					<input type="text" value={this.state.name} onChange={event => this.setState({name: event.target.value})} />
+				</div>
+				<div className="menuItem">
+					<button onClick={this.setNewLobbyURL}>CREATE LOBBY</button>
+				</div>
+				<div className="menuItem">
+					<input type="text" onChange={event => this.setState({joinCode: event.target.value})} />
+					<button onClick={this.setJoinLobbyURL}>JOIN</button>
+				</div>
+			</div>
 		);
 	}
 }

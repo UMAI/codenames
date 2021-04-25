@@ -13,7 +13,12 @@ class Team extends Component {
 		if (this.props.team.players) {
 			let players = []
 			for (let i = 0; i < this.props.team.players.length; i++) {
-				players.push(<Player style={style} player={this.props.team.players[i]}/>);
+				players.push(
+					<Player
+						style={style}
+						player={this.props.team.players[i]}
+						key={this.props.team.players[i].id}
+					/>);
 			}
 			return (
 				<div className="team" style={style}>

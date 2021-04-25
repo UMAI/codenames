@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.QueryParam;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -46,6 +45,12 @@ public class GameController {
 	@ResponseBody
 	public ResponseEntity renamePlayer() {
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/lobby/{lobbyId}")
+	@ResponseBody
+	public Lobby getLobby(@PathVariable("lobbyId") Long lobbyId) {
+		return lobbiesRepository.findById(lobbyId).orElseThrow();
 	}
 
 	@PutMapping("/lobby")
@@ -73,7 +78,7 @@ public class GameController {
 		lobby.setLobbyWords(lobbyWords);
 	}
 
-	@PostMapping("/lobby/join")
+	@PostMapping("/lobby")
 	@ResponseBody
 	public Lobby joinLobby(@QueryParam(value = "joinCode") String joinCode, @QueryParam(value = "playerName") String playerName) {
 		Lobby lobby = lobbiesRepository.findFirstByJoinCode(joinCode);

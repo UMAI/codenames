@@ -2,6 +2,24 @@
     font-family: "Courier New", sans-serif;
 }
 
+.menu {
+    position: absolute;
+    width: 99%;
+    height: 99%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menuItem {
+    width: 200pt;
+    height: 60pt;
+    line-height: 60pt;
+    font-size: 25pt;
+    text-align: center;
+}
+
 .lobby {
     display: flex;
     flex-direction: column;
@@ -14,6 +32,13 @@
 }
 
 .lobbyContent {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.lobbyUndecidedPlayers {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -39,4 +64,15 @@
     font-size: 40pt;
     text-align: center;
     border-bottom-style: solid;
+}
+
+.player {
+    height: 60pt;
+    line-height: 60pt;
+    font-size: 25pt;
+    text-align: center;
+}
+
+.currentPlayer {
+    background-color: burlywood;
 }
