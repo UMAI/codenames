@@ -41,28 +41,28 @@ public class Lobby {
 	private String langCode;
 
 	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value = "lobby-team")
 	private List<Team> teams;
 
 	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value = "lobby-player")
 	private List<Player> undecidedPlayers;
 
 	@OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value = "lobby-word")
 	private List<LobbyWord> lobbyWords;
 
 	public Lobby(String joinCode, String creatorName) {
 		this.joinCode = joinCode;
 		Player player = new Player(creatorName);
-		addPlayer(player);
+		addUndecidedPlayer(player);
 		Team redTeam = new Team(RED.name(), RED.getColorHex());
 		Team blueTeam = new Team(BLUE.name(), BLUE.getColorHex());
 		addTeam(redTeam);
 		addTeam(blueTeam);
 	}
 
-	public void addPlayer(Player player) {
+	public void addUndecidedPlayer(Player player) {
 		if (undecidedPlayers == null) {
 			undecidedPlayers = new ArrayList<>();
 		}
@@ -70,9 +70,9 @@ public class Lobby {
 		player.setLobby(this);
 	}
 
-	public void removePlayer(Player player) {
-		undecidedPlayers.remove(player);
+	public boolean removeUndecidedPlayer(Player player) {
 		player.setLobby(null);
+		return undecidedPlayers.remove(player);
 	}
 
 	public void addTeam(Team team) {

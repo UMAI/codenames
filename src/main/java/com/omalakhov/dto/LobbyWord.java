@@ -31,7 +31,7 @@ public class LobbyWord {
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_LOBBY_ID"))
-	@JsonBackReference
+	@JsonBackReference(value = "lobby-word")
 	private Lobby lobby;
 
 	@ManyToOne(fetch = FetchType.EAGER)

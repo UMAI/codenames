@@ -32,12 +32,13 @@ class Menu extends Component {
 
 	render() {
 		if (this.state.redirect) {
+			const currentPlayer = this.state.lobby.undecidedPlayers.find(player => player.name === this.state.name)
 			return (
 				<Redirect to={{
 					pathname: '/lobby/' + this.state.lobby.id,
 					state: {
 						lobby: this.state.lobby,
-						name: this.state.name
+						currentPlayer: currentPlayer
 					}
 				}} />
 			)

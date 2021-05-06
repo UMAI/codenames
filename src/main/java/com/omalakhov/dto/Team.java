@@ -53,11 +53,11 @@ public class Team {
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_LOBBY_ID"))
-	@JsonBackReference
+	@JsonBackReference(value = "lobby-team")
 	private Lobby lobby;
 
 	@OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value = "team-player")
 	private List<Player> players;
 
 	public Team(String name, String colorHex) {

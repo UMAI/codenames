@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "PLAYERS")
@@ -43,13 +44,16 @@ public class Player {
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_LOBBY_ID"))
-	@JsonBackReference
+	@JsonBackReference(value = "lobby-player")
 	private Lobby lobby;
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "FK_TEAM_ID"))
-	@JsonBackReference
+	@JsonBackReference(value = "team-player")
 	private Team team;
+
+	@Transient
+	private Long teamId;
 
 	@Column(name = "ROLE")
 	private String role;

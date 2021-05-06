@@ -1,6 +1,7 @@
 package com.omalakhov.rest;
 
 import com.omalakhov.dao.LobbiesRepository;
+import com.omalakhov.dao.PlayersRepository;
 import com.omalakhov.dao.WordsRepository;
 import com.omalakhov.dto.Lobby;
 import com.omalakhov.dto.LobbyWord;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +36,9 @@ public class GameController {
 
 	@Autowired
 	private LobbiesRepository lobbiesRepository;
+
+	@Autowired
+	private PlayersRepository playersRepository;
 
 	@PostMapping("/player/create")
 	@ResponseBody
@@ -54,7 +59,6 @@ public class GameController {
 	}
 
 	@PutMapping("/lobby")
-	@ResponseBody
 	public Lobby createLobby(@QueryParam(value = "creatorName") String creatorName, @QueryParam(value = "langCode") String langCode) {
 		Lobby lobby = new Lobby(CodeGenerator.generateLobbyJoinCode(), creatorName);
 		setLobbyWords(lobby);
@@ -79,28 +83,31 @@ public class GameController {
 	}
 
 	@PostMapping("/lobby")
-	@ResponseBody
 	public Lobby joinLobby(@QueryParam(value = "joinCode") String joinCode, @QueryParam(value = "playerName") String playerName) {
 		Lobby lobby = lobbiesRepository.findFirstByJoinCode(joinCode);
 		Player player = new Player(playerName);
-		lobby.addPlayer(player);
+		lobby.addUndecidedPlayer(player);
 		lobbiesRepository.save(lobby);
 		return lobby;
 	}
 
 	@DeleteMapping("/lobby/{lobbyId}")
-	@ResponseBody
 	public ResponseEntity deleteLobby(@PathVariable Long lobbyId) {
 		lobbiesRepository.deleteById(lobbyId);
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/lobby/{lobbyId}/{teamId}")
-	@ResponseBody
-	public ResponseEntity<Lobby> joinTeam(@PathVariable Long lobbyId, @PathVariable Long teamId, Player player) {
-		Lobby lobby = lobbiesRepository.findById(lobbyId).orElse(null);
-		if (lobby == null) {
-			return ResponseEntity.badRequest().build();
+	@PutMapping("/lobby/{lobbyId}/{teamId}/{playerId}")
+	public ResponseEntity<Lobby> joinTeam(@PathVariable Long lobbyId, @PathVariable Long teamId, @PathVariable Long playerId) {
+		Player player = playersRepository.findById(playerId).orElseThrow(BadRequestException::new);
+		Lobby lobby = lobbiesRepository.findById(lobbyId).orElseThrow(BadRequestException::new);
+		if (!lobby.removeUndecidedPlayer(player)) {
+			lobby
+					.getTeams()
+					.stream()
+					.filter(team -> team.getPlayers().contains(player))
+					.findFirst()
+					.ifPresent(team -> team.removePlayer(player));
 		}
 		lobby
 				.getTeams()
@@ -109,6 +116,7 @@ public class GameController {
 				.findFirst()
 				.ifPresent(team -> team.addPlayer(player));
 		lobbiesRepository.save(lobby);
+		player.setTeamId(player.getTeam().getId());
 		return ResponseEntity.ok(lobby);
 	}
 
