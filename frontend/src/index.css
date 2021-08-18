@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+* {
+  font-family: "Courier New", sans-serif;
+}
+
+.menu {
+  position: absolute;
+  width: 99%;
+  height: 99%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menuItem {
+  width: 200pt;
+  height: 60pt;
+  line-height: 60pt;
+  font-size: 25pt;
+  text-align: center;
+}
+
+.lobby {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.joinCode {
+  font-size: 40pt;
+}
+
+.lobbyContent {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.lobbyUndecidedPlayers {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.word {
+  color: antiquewhite;
+  width: 160pt;
+  height: 80pt;
+  font-size: 25pt;
+  font-size: 1vw;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  border-style: solid;
+  width: 200pt;
+}
+
+.teamName {
+  font-size: 40pt;
+  text-align: center;
+  border-bottom-style: solid;
+}
+
+.player {
+  border: 1pt solid transparent;
+  height: 35pt;
+  line-height: 35pt;
+  font-size: 25pt;
+  text-align: center;
+  margin: 3pt;
+}
+
+.player:hover {
+  border: 1pt solid #f9ccac;
+}
+
+.undecided {
+  height: 35pt;
+  line-height: 35pt;
+  font-size: 25pt;
+  font-weight: bold;
+  margin: 3pt;
+}
+
+.currentPlayer {
+  background-color: #fbefcc;
+}

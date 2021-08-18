@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: app-words
+  datasource:
+    url: jdbc:postgresql://localhost:5432/words
+    username: postgres
+    password: postgres
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
